@@ -21,13 +21,18 @@
     </el-header>
     <el-container>
       <el-aside width="200px" class="aside">
-        <el-menu default-active="2" unique-opened class="el-menu-vertical-demo ">
+        <el-menu
+        default-active="2"
+        unique-opened
+        class="el-menu-vertical-demo "
+        router
+        >
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="user">
               <i class="el-icon-location"></i>
               用户列表
             </el-menu-item>
@@ -68,19 +73,23 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
-  beforeCreate() {
-    if(!localStorage.getItem('token')){
-      this.$message.warning('请先登录');
+  // 判读有没有token
+  beforeCreate () {
+    // 如果没有，提示登录并跳转
+    if (!localStorage.getItem('token')) {
+      this.$message.warning('请先登录')
       this.$router.push({
-        name:'login'
-      });
+        name: 'login'
+      })
     }
   },
   methods: {
@@ -92,13 +101,16 @@ export default {
       this.$router.push({
         name: 'login'
       })
-      this.$message.success("退出成功");
+      this.$message.success('退出成功')
     }
   }
 }
 </script>
 
 <style>
+.el-container {
+  height: 100%;
+}
 .contain {
   background-color: cadetblue;
   line-height: 60px;
@@ -108,6 +120,6 @@ export default {
 }
 #app .aside {
     height: 100%;
-    background-color:darkgrey;
+    /* background-color:darkgrey; */
 }
 </style>

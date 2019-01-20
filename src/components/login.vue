@@ -26,7 +26,7 @@ export default {
   methods: {
     async login () {
       const res = await this.$http.post('login', this.formData)
-      //   console.log(res)
+        console.log(res)
       const {
         data: {
           meta: { msg, status },
