@@ -27,50 +27,17 @@
         class="el-menu-vertical-demo "
         router
         >
-          <el-submenu index="1">
+          <el-submenu :index="''+item1.order" v-for="(item1,i) in menus" :key="item1.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{item1.authName}}</span>
             </template>
-            <el-menu-item index="user">
+            <el-menu-item :index="item2.path" v-for="(item2,i) in item1.children" :key="item2.id">
               <i class="el-icon-location"></i>
-              用户列表
+              {{item2.authName}}
             </el-menu-item>
           </el-submenu>
-          <!-- 2 -->
-            <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="1-1">
-              <i class="el-icon-location"></i>
-              角色列表
-            </el-menu-item>
-            <el-menu-item index="1-1">
-              <i class="el-icon-location"></i>
-              权限列表
-            </el-menu-item>
-          </el-submenu>
-          <!-- 3 -->
-            <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>商品管理</span>
-            </template>
-            <el-menu-item index="">
-              <i class="el-icon-location"></i>
-              商品列表
-            </el-menu-item>
-            <el-menu-item index="">
-              <i class="el-icon-location"></i>
-              分类参数
-            </el-menu-item>
-            <el-menu-item index="">
-              <i class="el-icon-location"></i>
-              商品分类
-            </el-menu-item>
-          </el-submenu>
+         
         </el-menu>
       </el-aside>
       <el-main>
@@ -85,14 +52,22 @@ export default {
   // 判读有没有token
   beforeCreate () {
     // 如果没有，提示登录并跳转
-    if (!localStorage.getItem('token')) {
-      this.$message.warning('请先登录')
-      this.$router.push({
-        name: 'login'
-      })
+   
+  },
+  created () {
+    this.getMenus()
+  },
+  data () {
+    return {
+      menus:[]
     }
   },
   methods: {
+    async getMenus(){
+      const res = await this.$http.get(`menus`)
+      // console.log(res)
+      this.menus = res.data.data
+    },
     // 退出登录
     // 清除troken
     logout () {
